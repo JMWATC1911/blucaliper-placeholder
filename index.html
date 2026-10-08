@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BluCaliper · Launching soon</title>
+<meta name="description" content="BluCaliper. Launching soon.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#06080F">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preload" as="image" type="image/webp" href="assets/emblem/blucaliper-emblem-hero-body-1600.webp" imagesrcset="assets/emblem/blucaliper-emblem-hero-body-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-body-800.webp 800w" imagesizes="(min-width:1024px) 460px, 260px">
+<style>
+  @font-face { font-family: "Hubot Sans"; src: url("assets/fonts/hubot.woff2") format("woff2"); font-weight: 200 900; font-stretch: 75% 125%; font-style: normal; font-display: swap; }
+  :root {
+    --void: #06080f; --ink: #e8eef8; --ink-2: #a7b2c6; --ink-3: #8a96ac;
+    --blu: #016fe0; --hl-a: #3a96f8; --hl-b: #8cc4ff;
+    --ease: cubic-bezier(.2, 0, 0, 1);
+    --gutter: clamp(20px, 5vw, 64px);
+    --display: "Hubot Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--void); }
+  body { min-height: 100vh; color: var(--ink); font-family: var(--display); -webkit-font-smoothing: antialiased; }
+
+  /* One screen, like the home hero: the name top left, the headline left, the emblem right, the wave low behind. */
+  .stage { position: relative; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; overflow: clip; background: var(--void); }
+  .bar { position: relative; z-index: 2; padding: 22px var(--gutter) 0; }
+  .brand { display: inline-block; line-height: 0; }
+  .brand img { width: clamp(150px, 15vw, 190px); height: auto; display: block; }
+
+  .wave { position: absolute; inset: auto 0 0 0; height: clamp(200px, 34vw, 380px); pointer-events: none; z-index: 0;
+    -webkit-mask: linear-gradient(transparent, #000 30%, #000 70%, transparent); mask: linear-gradient(transparent, #000 30%, #000 70%, transparent); }
+  .ribbon { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+  .ribbon-static { background: radial-gradient(60% 40% at 30% 58%, rgb(1 111 224 / .26), transparent 70%), linear-gradient(172deg, transparent 42%, rgb(1 111 224 / .14) 50%, rgb(46 230 255 / .06) 54%, transparent 62%); }
+
+  .top { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 8px var(--gutter) clamp(150px, 24vw, 200px); max-width: 1320px; width: 100%; margin: 0 auto; }
+  .em { align-self: center; width: min(54vw, 230px); margin: 4px 0 18px; }
+  .emblem { position: relative; aspect-ratio: 1600 / 1843; width: 100%; pointer-events: none; user-select: none; }
+  .emblem img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; }
+  .head { text-align: center; }
+  h1 { margin: 0; font-family: var(--display); font-weight: 780; font-stretch: 75%; font-size: clamp(56px, 17vw, 96px); line-height: .94; letter-spacing: -.016em; }
+  h1 span { display: block; }
+  .hl { color: var(--hl-a); background: linear-gradient(100deg, var(--hl-a), var(--hl-b)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .lead { margin: 22px 0 0; font-size: clamp(17px, 1.5vw, 19px); line-height: 1.55; letter-spacing: -.005em; color: var(--ink-2); }
+  .beat { display: block; margin-top: 6px; color: var(--ink); font-weight: 600; }
+  .tag { margin: 14px 0 0; font-size: clamp(19px, 1.7vw, 24px); line-height: 1.4; font-weight: 600; letter-spacing: -.005em; color: var(--ink); }
+  .cta { margin: 30px 0 0; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border: 1px solid rgb(232 238 248 / .3); border-radius: 8px; color: var(--ink); font-family: var(--display); font-size: 14.5px; font-weight: 600; text-decoration: none; transition: border-color 160ms linear, background-color 160ms linear; }
+  .btn:hover { border-color: var(--hl-a); background: rgb(1 111 224 / .12); }
+  .btn:focus-visible { outline: 2px solid var(--hl-a); outline-offset: 3px; }
+  .btn { cursor: pointer; background: transparent; }
+  /* The early-access form: a native dialog, so focus is held inside it and Escape closes it. */
+  dialog { width: min(440px, calc(100vw - 32px)); padding: 0; border: 1px solid #243049; border-radius: 14px; background: #0b0f19; color: var(--ink); box-shadow: 0 24px 80px rgb(0 0 0 / .6); }
+  dialog::backdrop { background: rgb(3 5 10 / .72); backdrop-filter: blur(2px); }
+  .panel { padding: 26px 26px 22px; }
+  .panel h2 { margin: 0; font-family: var(--display); font-weight: 780; font-stretch: 75%; font-size: 34px; line-height: 1; letter-spacing: -.01em; }
+  .panel .sub { margin: 8px 0 18px; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .panel label { display: block; margin: 0 0 12px; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--ink-2); }
+  .panel input, .panel select { display: block; width: 100%; height: 42px; margin-top: 5px; padding: 0 12px; border: 1px solid #2a3652; border-radius: 8px; background: #06080f; color: var(--ink); font: 400 15px var(--display); }
+  .panel input:focus, .panel select:focus { outline: 2px solid var(--hl-a); outline-offset: 1px; border-color: transparent; }
+  .panel [aria-invalid="true"] { border-color: #f87171; }
+  .panel .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .row { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
+  .go { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border: 0; border-radius: 8px; background: var(--blu); color: #fff; font: 600 14.5px var(--display); cursor: pointer; }
+  .go:hover { background: #0063cc; }
+  .go[aria-disabled="true"] { opacity: .6; cursor: progress; }
+  .cancel { height: 44px; padding: 0 14px; border: 0; background: none; color: var(--ink-2); font: 500 14px var(--display); cursor: pointer; }
+  .cancel:hover { color: var(--ink); }
+  .msg { min-height: 20px; margin: 10px 0 0; font-size: 13px; line-height: 1.45; color: #fca5a5; }
+  .msg a { color: var(--hl-b); }
+  .done h2 { font-size: 40px; }
+  .done .sub { font-size: 16px; margin-bottom: 0; }
+  .legal { position: absolute; z-index: 2; left: 0; right: 0; bottom: 18px; margin: 0; text-align: center; font-size: 12px; letter-spacing: .02em; color: var(--ink-3); }
+
+  @media (min-width: 720px) { .em { width: 300px; } }
+  @media (min-width: 1024px) {
+    .top { display: grid; grid-template-columns: minmax(0, 1fr) clamp(320px, 32vw, 460px); column-gap: 56px; align-items: center; padding-bottom: 150px; }
+    .em { grid-area: 1 / 2; width: 100%; margin: 0; }
+    .head { grid-area: 1 / 1; text-align: left; }
+    h1 { font-size: clamp(68px, 8.6vw, 132px); line-height: .92; }
+    .lead { max-width: 44ch; font-size: clamp(19px, 1.7vw, 24px); }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="wave" aria-hidden="true"><canvas class="ribbon ribbon-static" data-ribbon="overnight" data-ribbon-opacity=".8"></canvas></div>
+
+    <header class="bar">
+      <a class="brand" href="/" aria-label="BluCaliper"><img src="assets/img/lockup-3d-nav.webp" alt="BluCaliper" width="370" height="132"></a>
+    </header>
+
+    <main class="top">
+      <div class="em">
+        <div class="emblem" aria-hidden="true">
+          <img class="body" src="assets/emblem/blucaliper-emblem-hero-body-1600.webp" srcset="assets/emblem/blucaliper-emblem-hero-body-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-body-800.webp 800w" sizes="(min-width:1024px) 460px, 260px" alt="" width="1600" height="1843" fetchpriority="high" decoding="async" draggable="false">
+          <img class="rotor" src="assets/emblem/blucaliper-emblem-hero-rotor-1600.webp" srcset="assets/emblem/blucaliper-emblem-hero-rotor-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-rotor-800.webp 800w" sizes="(min-width:1024px) 460px, 260px" alt="" width="1600" height="1843" decoding="async" draggable="false">
+        </div>
+      </div>
+      <div class="head">
+        <h1><span>Launching</span> <span class="hl">soon.</span></h1>
+        <p class="lead">Every dealership is sitting on money it can’t see.<span class="beat">Soon, you will.</span></p>
+        <p class="tag">Don’t manage the data. Dominate the market.</p>
+        <p class="cta"><button class="btn" type="button" id="signup-open" aria-haspopup="dialog">Be first to see it <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></p>
+      </div>
+    </main>
+
+    <p class="legal">&copy; 2026 BluCaliper LLC</p>
+  </div>
+
+  <dialog id="signup" aria-labelledby="signup-h">
+    <div class="panel" id="signup-form-panel">
+      <h2 id="signup-h">Be first to see it.</h2>
+      <p class="sub">Tell us where to reach you. We&rsquo;ll be in touch before we launch.</p>
+      <form id="signup-form" novalidate>
+        <input type="hidden" name="source" value="launch">
+        <div class="trap" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label>Your name<input name="name" type="text" autocomplete="name" required maxlength="120"></label>
+        <label>Work email<input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+        <label>Store or group name<input name="company" type="text" autocomplete="organization" required maxlength="160"></label>
+        <label>Rooftops
+          <select name="rooftops" required>
+            <option value="">Choose one</option>
+            <option value="1">1</option>
+            <option value="2-5">2 to 5</option>
+            <option value="6-19">6 to 19</option>
+            <option value="20+">20 or more</option>
+          </select>
+        </label>
+        <p class="msg" id="signup-msg" role="alert"></p>
+        <div class="row">
+          <button class="go" type="submit" id="signup-go">Add me to the list</button>
+          <button class="cancel" type="button" id="signup-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+    <div class="panel done" id="signup-done" hidden>
+      <h2>You&rsquo;re on the list.</h2>
+      <p class="sub">We&rsquo;ll be in touch before we launch.</p>
+      <div class="row"><button class="cancel" type="button" id="signup-close">Close</button></div>
+    </div>
+  </dialog>
+
+  <script>
+    /* Early-access signup. It posts to the BluCaliper app, which saves it to Prospects first, then tells the team. */
+    (function () {
+      var local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      var ENDPOINT = local ? 'http://localhost:3000/api/audit-request' : 'https://demo.blucaliper.com/api/audit-request';
+      var MAIL = 'mailto:sales@blucaliper.com?subject=BluCaliper';
+      var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      var dlg = document.getElementById('signup'), form = document.getElementById('signup-form'), msg = document.getElementById('signup-msg');
+      var go = document.getElementById('signup-go'), panel = document.getElementById('signup-form-panel'), done = document.getElementById('signup-done');
+      var busy = false;
+      document.getElementById('signup-open').addEventListener('click', function () { panel.hidden = false; done.hidden = true; msg.textContent = ''; dlg.showModal(); form.elements.name.focus(); });
+      document.getElementById('signup-cancel').addEventListener('click', function () { dlg.close(); });
+      document.getElementById('signup-close').addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      function problem() {
+        var f = form.elements, first = null;
+        ['name', 'email', 'company', 'rooftops'].forEach(function (k) { f[k].removeAttribute('aria-invalid'); });
+        if (!f.name.value.trim()) first = [f.name, 'Enter your name.'];
+        else if (!EMAIL.test(f.email.value.trim())) first = [f.email, 'Enter a work email so we can reach you.'];
+        else if (!f.company.value.trim()) first = [f.company, 'Enter your store or group name.'];
+        else if (!f.rooftops.value) first = [f.rooftops, 'Choose how many rooftops.'];
+        return first;
+      }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (busy) return;
+        var p = problem();
+        if (p) { p[0].setAttribute('aria-invalid', 'true'); p[0].focus(); msg.textContent = p[1]; return; }
+        busy = true; go.setAttribute('aria-disabled', 'true'); msg.textContent = '';
+        fetch(ENDPOINT, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw new Error(String(r.status)); panel.hidden = true; done.hidden = false; form.reset(); })
+          .catch(function () { msg.innerHTML = 'That didn&rsquo;t go through. Please try again, or <a href="' + MAIL + '">email us</a>.'; })
+          .then(function () { busy = false; go.removeAttribute('aria-disabled'); });
+      });
+    })();
+  </script>
+
+  <script type="module">
+    import { initRibbons } from './assets/js/ribbon.js';
+    import { loop } from './assets/js/loop.js';
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    initRibbons(document, { reduced, loop });
+  </script>
+</body>
+</html>
