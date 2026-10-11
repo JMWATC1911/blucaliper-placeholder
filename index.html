@@ -1,66 +1,36 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" class="no-js" data-page="home" data-sky="calm" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BluCaliper · Launching soon</title>
-<meta name="description" content="BluCaliper. Launching soon.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BluCaliper · Don’t manage the data. Dominate the market.</title>
+<meta name="description" content="The dealership intelligence platform that unlocks stalled funding and turns aged inventory. No multi-year traps, total rooftop control.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#06080F">
-<link rel="icon" href="favicon.ico" sizes="48x48">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BluCaliper">
-<meta property="og:title" content="BluCaliper · Launching soon">
-<meta property="og:description" content="Every dealership is sitting on money it can't see. Soon, you will.">
+<meta property="og:title" content="BluCaliper · Don’t manage the data. Dominate the market.">
+<meta property="og:description" content="The dealership intelligence platform that unlocks stalled funding and turns aged inventory. No multi-year traps, total rooftop control.">
 <meta property="og:image" content="https://blucaliper.com/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The BluCaliper B emblem in glossy 3D on a dark blue stage.">
+<meta property="og:image:alt" content="The BluCaliper B emblem in glossy 3D on a blue stage.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" as="image" type="image/webp" href="assets/emblem/blucaliper-emblem-hero-body-1600.webp" imagesrcset="assets/emblem/blucaliper-emblem-hero-body-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-body-800.webp 800w" imagesizes="(min-width:1024px) 460px, 260px">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<script>(function(){var d=document.documentElement,t=null;try{t=new URLSearchParams(location.search).get('theme')}catch(e){}if(t!=='light'&&t!=='dark'){try{t=localStorage.getItem('bc-theme')}catch(e){t=null}}t=t==='light'?'light':'dark';d.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m&&t==='dark')m.setAttribute('content','#06080F')})()</script>
+<link rel="preload" href="assets/fonts/hubot.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/azeret.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site-home.css">
+<script>document.documentElement.classList.replace('no-js','js')</script>
 <style>
-  @font-face { font-family: "Hubot Sans"; src: url("assets/fonts/hubot.woff2") format("woff2"); font-weight: 200 900; font-stretch: 75% 125%; font-style: normal; font-display: swap; }
-  :root {
-    --void: #06080f; --ink: #e8eef8; --ink-2: #a7b2c6; --ink-3: #8a96ac;
-    --blu: #016fe0; --hl-a: #3a96f8; --hl-b: #8cc4ff;
-    --ease: cubic-bezier(.2, 0, 0, 1);
-    --gutter: clamp(20px, 5vw, 64px);
-    --display: "Hubot Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--void); }
-  body { min-height: 100vh; color: var(--ink); font-family: var(--display); -webkit-font-smoothing: antialiased; }
-
-  /* One screen, like the home hero: the name top left, the headline left, the emblem right, the wave low behind. */
-  .stage { position: relative; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; overflow: clip; background: var(--void); }
-  .bar { position: relative; z-index: 2; padding: 22px var(--gutter) 0; }
-  .brand { display: inline-block; line-height: 0; }
-  .brand img { width: clamp(150px, 15vw, 190px); height: auto; display: block; }
-
-  .wave { position: absolute; inset: auto 0 0 0; height: clamp(200px, 34vw, 380px); pointer-events: none; z-index: 0;
-    -webkit-mask: linear-gradient(transparent, #000 30%, #000 70%, transparent); mask: linear-gradient(transparent, #000 30%, #000 70%, transparent); }
-  .ribbon { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
-  .ribbon-static { background: radial-gradient(60% 40% at 30% 58%, rgb(1 111 224 / .26), transparent 70%), linear-gradient(172deg, transparent 42%, rgb(1 111 224 / .14) 50%, rgb(46 230 255 / .06) 54%, transparent 62%); }
-
-  .top { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 8px var(--gutter) clamp(150px, 24vw, 200px); max-width: 1320px; width: 100%; margin: 0 auto; }
-  .em { align-self: center; width: min(54vw, 230px); margin: 4px 0 18px; }
-  .emblem { position: relative; aspect-ratio: 1600 / 1843; width: 100%; pointer-events: none; user-select: none; }
-  .emblem img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; }
-  .head { text-align: center; }
-  h1 { margin: 0; font-family: var(--display); font-weight: 780; font-stretch: 75%; font-size: clamp(56px, 17vw, 96px); line-height: .94; letter-spacing: -.016em; }
-  h1 span { display: block; }
-  .hl { color: var(--hl-a); background: linear-gradient(100deg, var(--hl-a), var(--hl-b)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-  .lead { margin: 22px 0 0; font-size: clamp(17px, 1.5vw, 19px); line-height: 1.55; letter-spacing: -.005em; color: var(--ink-2); }
-  .beat { display: block; margin-top: 6px; color: var(--ink); font-weight: 600; }
-  .tag { margin: 14px 0 0; font-size: clamp(19px, 1.7vw, 24px); line-height: 1.4; font-weight: 600; letter-spacing: -.005em; color: var(--ink); }
-  .cta { margin: 30px 0 0; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border: 1px solid rgb(232 238 248 / .3); border-radius: 8px; color: var(--ink); font-family: var(--display); font-size: 14.5px; font-weight: 600; text-decoration: none; transition: border-color 160ms linear, background-color 160ms linear; }
-  .btn:hover { border-color: var(--hl-a); background: rgb(1 111 224 / .12); }
-  .btn:focus-visible { outline: 2px solid var(--hl-a); outline-offset: 3px; }
-  .btn { cursor: pointer; background: transparent; }
+  :root { --ink-2: #a7b2c6; --hl-a: #3a96f8; --hl-b: #8cc4ff; --blu: #016fe0; --display: "Hubot Sans", ui-sans-serif, system-ui, sans-serif; }
   /* The early-access form: a native dialog, so focus is held inside it and Escape closes it. */
   dialog { width: min(440px, calc(100vw - 32px)); padding: 0; border: 1px solid #243049; border-radius: 14px; background: #0b0f19; color: var(--ink); box-shadow: 0 24px 80px rgb(0 0 0 / .6); }
   dialog::backdrop { background: rgb(3 5 10 / .72); backdrop-filter: blur(2px); }
@@ -82,48 +52,70 @@
   .msg a { color: var(--hl-b); }
   .done h2 { font-size: 40px; }
   .done .sub { font-size: 16px; margin-bottom: 0; }
-  .legal { position: absolute; z-index: 2; left: 0; right: 0; bottom: 18px; margin: 0; text-align: center; font-size: 12px; letter-spacing: .02em; color: var(--ink-3); }
 
-  @media (min-width: 720px) { .em { width: 300px; } }
-  @media (min-width: 1024px) {
-    .top { display: grid; grid-template-columns: minmax(0, 1fr) clamp(320px, 32vw, 460px); column-gap: 56px; align-items: center; padding-bottom: 150px; }
-    .em { grid-area: 1 / 2; width: 100%; margin: 0; }
-    .head { grid-area: 1 / 1; text-align: left; }
-    h1 { font-size: clamp(68px, 8.6vw, 132px); line-height: .92; }
-    .lead { max-width: 44ch; font-size: clamp(19px, 1.7vw, 24px); }
-  }
+  .launch-legal { position: relative; z-index: 2; margin: 0; padding: 0 0 22px; text-align: center; font-size: 12px; letter-spacing: .02em; color: #8a96ac; }
 </style>
 </head>
-<body>
-  <div class="stage">
-    <div class="wave" aria-hidden="true"><canvas class="ribbon ribbon-static" data-ribbon="overnight" data-ribbon-opacity=".8"></canvas></div>
+<body data-page="home">
+<a class="skip" href="#main">Skip to content</a>
+<div class="atmos" aria-hidden="true"></div>
 
-    <header class="bar">
-      <a class="brand" href="/" aria-label="BluCaliper"><img src="assets/img/lockup-3d-nav.webp" alt="BluCaliper" width="370" height="132"></a>
-    </header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  
+  <symbol id="g-dot" viewBox="0 0 10 10"><rect x="4" y="0" width="2" height="10"/></symbol>
+  <symbol id="g-dia" viewBox="0 0 10 10"><path d="M5 .6 9.4 5 5 9.4.6 5z"/></symbol>
+  <symbol id="g-oct" viewBox="0 0 10 10"><path d="M3.3.8h3.4l2.5 2.5v3.4L6.7 9.2H3.3L.8 6.7V3.3z"/></symbol>
+  <symbol id="g-hex" viewBox="0 0 10 10"><path d="M5 .5l4 2.3v4.4L5 9.5 1 7.2V2.8z"/></symbol>
+  <symbol id="g-chev" viewBox="0 0 10 10"><path d="M2 3.6 5 6.6 8 3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="g-arrow" viewBox="0 0 10 10"><path d="M1.5 5h7M5.6 2.1 8.5 5 5.6 7.9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  
+  <symbol id="bc-pad" viewBox="-1 0 40 100">
+    <path fill="#016FE0" stroke="#04122B" stroke-width="1.4" stroke-linejoin="round" d="M26,2 L34.3,7.4 L34.3,24.9 L35.1,27.6 L36.6,30 L37.4,32.7 L37.4,35 L37,37.4 L35.8,40.1 L34.7,42.4 L34,45.1 L33.6,47.5 L33.6,54.9 L34.3,57.6 L35.5,59.9 L36.6,62.6 L37.4,65 L37.4,67.3 L36.6,70 L35.5,72.4 L34.3,75.1 L34.3,92.6 L26,99 L24.5,97.6 L20.4,94.9 L17.7,92.6 L15.1,89.9 L12.8,87.5 L10.6,84.8 L8.7,82.5 L7.9,80.1 L7.2,77.4 L6.4,75.1 L3.4,72.4 L3,70 L4.2,67.3 L4.9,65 L4.5,62.6 L3.8,59.9 L2.6,57.6 L1.5,54.9 L0,52.5 L0,47.5 L3,45.1 L3,42.4 L3.8,40.1 L4.9,37.4 L4.5,35 L3.8,32.7 L4.2,30 L6.8,27.6 L7.2,24.9 L7.9,22.6 L9.1,19.9 L10.9,17.5 L13.2,15.2 L15.5,12.5 L18.1,10.1 L20.8,7.4 Z"/>
+    <g fill="none" stroke="#F2F5FA" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="1.7" d="M28.6,11 L28.9,24.5 L30,27.8 L31.6,30.6 L32.2,33.6 L31.8,37 L30.4,40.2 L29,43.4 L28.4,47.6 L28.4,53 L29,57.2 L30.4,60.4 L31.7,63.4 L32.1,66.6 L31.4,69.8 L30,72.6 L28.9,75.6 L28.6,89"/>
+      <path stroke-width="1.3" d="M12.5,19.5 C16,20.6 18.6,23.8 22.4,22.6 M6.6,33.2 C10.4,34 13.2,31.6 17.4,34.4 C19.6,35.9 21.6,35.6 23.4,34.8 M3.6,50.4 C8.2,49 11,52.6 15.6,50.2 C18.2,48.9 20.4,49.6 22.6,50.8 M6.4,66.8 C10.2,65.6 12.6,68.8 16.8,66.6 C19,65.5 21,66 23,67 M10.6,81.6 C14.2,80.6 16.8,83.6 21.4,80.8"/>
+    </g>
+  </symbol>
+  <symbol id="bc-emblem" viewBox="-1 0 101 100">
+    <use href="#bc-pad" x="-1" y="0" width="40" height="100"/>
+    <path style="fill:var(--em-bar,#F2F5FA)" d="M36.5,1.5 H54 V98.5 H36.5 V75.1 L37.7,72.4 L38.8,70 L39.6,67.3 L39.6,65 L38.8,62.6 L37.7,59.9 L36.5,57.6 L35.8,54.9 L35.8,47.5 L36.2,45.1 L36.9,42.4 L38,40.1 L39.2,37.4 L39.6,35 L39.6,32.7 L38.8,30 L37.3,27.6 L36.5,24.9 Z"/>
+    <path fill="#016FE0" fill-rule="evenodd" d="M52,2 L74,2 A24,24 0 1,1 74,50 A24,24 0 1,1 74,98 L52,98 Z M67,11 A15,16 0 1,0 67,43 A15,16 0 1,0 67,11 Z M67,59 A15,16 0 1,0 67,91 A15,16 0 1,0 67,59 Z"/>
+  </symbol>
+</svg>
 
-    <main class="top">
-      <div class="em">
-        <div class="emblem" aria-hidden="true">
-          <img class="body" src="assets/emblem/blucaliper-emblem-hero-body-1600.webp" srcset="assets/emblem/blucaliper-emblem-hero-body-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-body-800.webp 800w" sizes="(min-width:1024px) 460px, 260px" alt="" width="1600" height="1843" fetchpriority="high" decoding="async" draggable="false">
-          <img class="rotor" src="assets/emblem/blucaliper-emblem-hero-rotor-1600.webp" srcset="assets/emblem/blucaliper-emblem-hero-rotor-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-rotor-800.webp 800w" sizes="(min-width:1024px) 460px, 260px" alt="" width="1600" height="1843" decoding="async" draggable="false">
-        </div>
-      </div>
-      <div class="head">
-        <h1><span>Launching</span> <span class="hl">soon.</span></h1>
-        <p class="lead">Every dealership is sitting on money it can’t see.<span class="beat">Soon, you will.</span></p>
-        <p class="tag">Don’t manage the data. Dominate the market.</p>
-        <p class="cta"><button class="btn" type="button" id="signup-open" aria-haspopup="dialog">Be first to see it <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></p>
-      </div>
-    </main>
-
-    <p class="legal">&copy; 2026 BluCaliper LLC</p>
+<header class="chrome" id="top">
+<div id="s00" class="bar">
+  <div class="wrap bar-in">
+    <a class="lockup" href="/" aria-label="BluCaliper, home">
+      <picture><source srcset="assets/img/lockup-3d-nav.webp" type="image/webp"><img class="lockup-img" src="assets/img/lockup-3d-nav.png" alt="" width="370" height="132" decoding="async"></picture>
+    </a>
+    <div hidden><div class="nav-item"><button type="button" data-menu></button></div><div id="nav-platform" hidden></div><button type="button" class="nav-toggle"></button><div id="nav-sheet" hidden></div></div>
   </div>
+</div>
+</header>
+
+<main id="main" tabindex="-1">
+<section id="s20" class="sec stage stage-black" aria-labelledby="s20-h">
+  <div class="wave wave-full" aria-hidden="true"><canvas class="ribbon" data-ribbon="overnight" data-ribbon-opacity=".8"></canvas></div>
+  <div class="wrap s20-top">
+    <div class="s20-em"><div class="s20-emblem emblem" data-emblem data-emblem-static data-emblem-sizes="(min-width:1024px) 460px, 260px" data-emblem-delay="160" aria-hidden="true"><picture class="emblem-body"><source type="image/webp" srcset="assets/emblem/blucaliper-emblem-hero-body-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-body-800.webp 800w" sizes="(min-width:1024px) 460px, 260px"><img src="assets/emblem/blucaliper-emblem-hero-body.png" alt="" width="1600" height="1843" decoding="async" fetchpriority="high" draggable="false"></picture><picture class="emblem-rotor"><source type="image/webp" srcset="assets/emblem/blucaliper-emblem-hero-rotor-1600.webp 1600w, assets/emblem/blucaliper-emblem-hero-rotor-800.webp 800w" sizes="(min-width:1024px) 460px, 260px"><img src="assets/emblem/blucaliper-emblem-hero-rotor.png" alt="" width="1600" height="1843" decoding="async" draggable="false"></picture></div></div>
+    <div class="s20-head">
+      <h1 class="d-xl s20-h1" id="s20-h"><span class="s20-l">Don’t manage the data.</span> <span class="s20-l"><span class="hl">Dominate the market.</span></span></h1>
+      <p class="lead s20-lead">The dealership intelligence platform that unlocks stalled funding and turns aged inventory. No multi-year traps, total rooftop control.</p>
+      <div class="s20-ctas">
+        <button class="btn btn-primary s20-cta" type="button" id="signup-open" aria-haspopup="dialog">Request a demo <svg class="gly" aria-hidden="true"><use href="#g-arrow"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<p class="launch-legal">&copy; 2026 BluCaliper LLC</p>
 
   <dialog id="signup" aria-labelledby="signup-h">
     <div class="panel" id="signup-form-panel">
-      <h2 id="signup-h">Be first to see it.</h2>
-      <p class="sub">Tell us where to reach you. We&rsquo;ll be in touch before we launch.</p>
+      <h2 id="signup-h">Request a demo.</h2>
+      <p class="sub">Tell us where to reach you and we&rsquo;ll be in touch.</p>
       <form id="signup-form" novalidate>
         <input type="hidden" name="source" value="launch">
         <div class="trap" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -141,17 +133,20 @@
         </label>
         <p class="msg" id="signup-msg" role="alert"></p>
         <div class="row">
-          <button class="go" type="submit" id="signup-go">Add me to the list</button>
+          <button class="go" type="submit" id="signup-go">Send request</button>
           <button class="cancel" type="button" id="signup-cancel">Cancel</button>
         </div>
       </form>
     </div>
     <div class="panel done" id="signup-done" hidden>
-      <h2>You&rsquo;re on the list.</h2>
-      <p class="sub">We&rsquo;ll be in touch before we launch.</p>
+      <h2>Thanks, we have it.</h2>
+      <p class="sub">We&rsquo;ll be in touch shortly.</p>
       <div class="row"><button class="cancel" type="button" id="signup-close">Close</button></div>
     </div>
   </dialog>
+
+<script type="application/json" id="bc-data">{"figures":{"site":{"signInUrl":"","auditEndpoint":"/api/audit-request","auditLive":"no","ndaVersion":"1","ndaSha256":"417ff09f35e0bfe4b1661f163d89f97d5f956db8b1cda92c7f238aadd444298c","year":"2026"},"s":{"15":{},"20":{},"21":{"citTotalM":"$1.4M"},"22":{},"23":{},"24":{},"25":{},"26":{},"00":{},"01":{"rooftopsWord":"two","critDays":"10","agingLine":"60","moveTasks":"23","targetMin":"5","alertMin":"10","targetAt":"50%","lane0":{"name":"Lane 1","med":"3.2","slow":"9.5","medW":"32%","slowW":"95%","arrivals":"54","onTime":"63%","breaches":"3","chip":"c-watch","glyph":"g-dia","label":"Slowest past target","st":"s-watch"},"lane1":{"name":"Lane 2","med":"3.2","slow":"8.3","medW":"32%","slowW":"83%","arrivals":"42","onTime":"79%","breaches":"4","chip":"c-watch","glyph":"g-dia","label":"Slowest past target","st":"s-watch"},"st":{"front_pu_used":"s-out","age_used":"s-out","age_new":"s-watch","cit_count":"s-normal"},"t1":{"b0w":"36.4%","b1w":"9.1%","b2w":"54.5%","gaugeTitle":"Average age of the used lot at Riverside: 39.9 days, against its normal range of 29.5 to 38 days.","gv":"out","work":"Checking Anomaly Watch","tools":"Anomaly Watch, Inventory"},"traces":[{"ask":"Why is front gross per used unit down at Riverside?","work":"Checking Anomaly Watch","scope":"Riverside","tools":"Anomaly Watch, Inventory","gauge":{"min":0,"max":75,"step":5,"major":15,"val":39.92,"dec":1,"state":"out","zones":[{"from":29.480112000000005,"to":38.019887999999995,"state":"normal"},{"from":38.019887999999995,"to":75,"state":"out"}],"label":"AVG AGE · USED LOT · DAYS","title":"Average age of the used lot at Riverside: 39.9 days, against its normal range of 29.5 to 38 days."},"card":{"title":"Front gross per used unit","chip":"c-out","glyph":"g-oct","state":"Out of range","value":"$1,091","sub":"Normal $2,124–$3,554 · Riverside","detail":"11 used units past 60 days","bars":[{"l":"61–75d","v":"4","w":"36.4%","f":false},{"l":"76–90d","v":"1","w":"9.1%","f":false},{"l":"90d+","v":"6","w":"54.5%","f":true}]},"done":"Front gross per used unit at Riverside is $1,091, out of range: normal is $2,124–$3,554. 11 used units are past 60 days."},{"ask":"Which lender is holding the most money past 10 days?","work":"Reading cash & floor-plan health","scope":"Riverside, Summit Auto Group","tools":"CFO Overview, Deals","gauge":{"min":0,"max":30,"step":2,"major":10,"val":21,"dec":0,"state":"out","zones":[{"from":0,"to":4,"state":"normal","last":false},{"from":4,"to":7,"state":"watch","last":false},{"from":7,"to":10,"state":"out","last":false},{"from":10,"to":30,"state":"out","last":true}],"label":"AVG DAYS IN TRANSIT","title":"Captive Lender's contracts past 10 days average 21 days in transit, against an example 4-day funding window."},"card":{"title":"Held past 10 days","chip":"c-out","glyph":"g-oct","state":"Critical","value":"$331.7K","sub":"Captive Lender · 3 contracts · oldest 24 days","detail":"$1.18M held past 10 days · top lenders below","bars":[{"l":"Captive Lender","v":"$331.7K","w":"100%","f":true},{"l":"National Prime A","v":"$321.1K","w":"96.8%","f":false},{"l":"Regional Bank","v":"$259.2K","w":"78.1%","f":false}]},"done":"Captive Lender is holding the most past 10 days: $331.7K across 3 contracts."},{"ask":"What should we cut or wholesale today?","work":"Reading the Pricing Coach","scope":"Riverside","tools":"Pricing Coach, Inventory","gauge":{"min":0,"max":30,"step":2,"major":10,"val":11,"dec":0,"state":"normal","zones":[{"from":2.0696000000000003,"to":13.930399999999999,"state":"normal"},{"from":13.930399999999999,"to":30,"state":"out"}],"label":"USED UNITS PAST 60 DAYS","title":"Riverside has 11 used units past 60 days, against its normal range of 2–14."},"card":{"title":"Worth acting on today","chip":"c-watch","glyph":"g-dia","state":"23 moves","value":"$10,166","sub":"Holding cost $1,805 a day · Riverside","detail":"112 cars checked","bars":[{"l":"Cut","v":"12","w":"100%","f":false},{"l":"Wholesale","v":"11","w":"91.7%","f":false},{"l":"Wait","v":"2","w":"16.7%","f":false}]},"done":"$10,166 is worth acting on today at Riverside: 12 cuts and 11 wholesale calls."}]}}},"plates":{"H1":{"aspect":"21 / 9","alt":"","mp4":"assets/plates/H1-clamp-macro-21x9.mp4","webm":"assets/plates/H1-clamp-macro-21x9.webm","poster":"assets/plates/H1-poster-2400.webp","posterSm":"assets/plates/H1-poster-1200.webp"},"H1v":{"aspect":"9 / 16","alt":"","mp4":"assets/plates/H1-clamp-macro-9x16.mp4","webm":"assets/plates/H1-clamp-macro-9x16.webm","poster":"assets/plates/H1v-poster-2400.webp","posterSm":"assets/plates/H1v-poster-1200.webp"},"H3":{"aspect":"3 / 2","alt":"","mp4":null,"webm":null,"poster":"assets/plates/H3-poster-2400.webp","posterSm":"assets/plates/H3-poster-1200.webp"},"H4":{"aspect":"16 / 9","alt":"","mp4":"assets/plates/H4-service-drive-16x9.mp4","webm":"assets/plates/H4-service-drive-16x9.webm","poster":"assets/plates/H4-poster-2400.webp","posterSm":"assets/plates/H4-poster-1200.webp"},"H5":{"aspect":"16 / 9","alt":"","mp4":null,"webm":null,"poster":"assets/plates/H5-poster-2400.webp","posterSm":"assets/plates/H5-poster-1200.webp"},"H6":{"aspect":"16 / 9","alt":"","mp4":"assets/plates/H6-rotor-clock-16x9.mp4","webm":"assets/plates/H6-rotor-clock-16x9.webm","poster":"assets/plates/H6-poster-2400.webp","posterSm":"assets/plates/H6-poster-1200.webp"}},"emblem":{"width":1600,"height":1843,"body":{"webp":[["assets/emblem/blucaliper-emblem-hero-body-1600.webp",1600],["assets/emblem/blucaliper-emblem-hero-body-800.webp",800]],"png":"assets/emblem/blucaliper-emblem-hero-body.png"},"rotor":{"webp":[["assets/emblem/blucaliper-emblem-hero-rotor-1600.webp",1600],["assets/emblem/blucaliper-emblem-hero-rotor-800.webp",800]],"png":"assets/emblem/blucaliper-emblem-hero-rotor.png"}},"page":{"id":"home","file":"index.html"},"build":{"only":null,"at":"2026-10-10T18:20:04.319Z"}}</script>
+<script type="module" src="assets/site-home.js"></script>
 
   <script>
     /* Early-access signup. It posts to the BluCaliper app, which saves it to Prospects first, then tells the team. */
@@ -190,11 +185,5 @@
     })();
   </script>
 
-  <script type="module">
-    import { initRibbons } from './assets/js/ribbon.js';
-    import { loop } from './assets/js/loop.js';
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    initRibbons(document, { reduced, loop });
-  </script>
 </body>
 </html>
