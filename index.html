@@ -31,17 +31,33 @@
 <script>document.documentElement.classList.replace('no-js','js')</script>
 <style>
   :root { --ink-2: #a7b2c6; --hl-a: #3a96f8; --hl-b: #8cc4ff; --blu: #016fe0; --display: "Hubot Sans", ui-sans-serif, system-ui, sans-serif; }
-  /* The early-access form: a native dialog, so focus is held inside it and Escape closes it. */
-  dialog { width: min(440px, calc(100vw - 32px)); padding: 0; border: 1px solid #243049; border-radius: 14px; background: #0b0f19; color: var(--ink); box-shadow: 0 24px 80px rgb(0 0 0 / .6); }
+  /* The audit request form: a native dialog, so focus is held inside it and Escape closes it. Longer than before (the full form), so the dialog scrolls inside the window. */
+  dialog { width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow-y: auto; padding: 0; border: 1px solid #243049; border-radius: 14px; background: #0b0f19; color: var(--ink); box-shadow: 0 24px 80px rgb(0 0 0 / .6); }
   dialog::backdrop { background: rgb(3 5 10 / .72); backdrop-filter: blur(2px); }
   .panel { padding: 26px 26px 22px; }
   .panel h2 { margin: 0; font-family: var(--display); font-weight: 780; font-stretch: 75%; font-size: 34px; line-height: 1; letter-spacing: -.01em; }
   .panel .sub { margin: 8px 0 18px; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
   .panel label { display: block; margin: 0 0 12px; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--ink-2); }
-  .panel input, .panel select { display: block; width: 100%; height: 42px; margin-top: 5px; padding: 0 12px; border: 1px solid #2a3652; border-radius: 8px; background: #06080f; color: var(--ink); font: 400 15px var(--display); }
-  .panel input:focus, .panel select:focus { outline: 2px solid var(--hl-a); outline-offset: 1px; border-color: transparent; }
+  .panel .req { font-weight: 400; color: #7d8aa3; }
+  .panel input[type="text"], .panel input[type="email"], .panel input[type="tel"], .panel select { display: block; width: 100%; height: 42px; margin-top: 5px; padding: 0 12px; border: 1px solid #2a3652; border-radius: 8px; background: #06080f; color: var(--ink); font: 400 15px var(--display); }
+  .panel textarea { display: block; width: 100%; margin-top: 5px; padding: 10px 12px; border: 1px solid #2a3652; border-radius: 8px; background: #06080f; color: var(--ink); font: 400 15px/1.4 var(--display); resize: vertical; }
+  .panel input:focus, .panel select:focus, .panel textarea:focus { outline: 2px solid var(--hl-a); outline-offset: 1px; border-color: transparent; }
   .panel [aria-invalid="true"] { border-color: #f87171; }
   .panel .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .panel .two { display: grid; gap: 0 12px; grid-template-columns: 1fr; }
+  @media (min-width: 560px) { .panel .two { grid-template-columns: 1fr 1fr; } }
+  .panel fieldset.grp { margin: 0 0 12px; padding: 0; border: 0; min-width: 0; }
+  .panel fieldset.grp legend { padding: 0; margin: 0 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--ink-2); }
+  .panel .seg { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #2a3652; border-radius: 8px; background: #06080f; overflow: hidden; }
+  .panel .seg label, .panel .chips label { margin: 0; }
+  .panel .seg input, .panel .chips input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .panel .seg span { display: flex; align-items: center; justify-content: center; height: 42px; font: 500 14px ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--ink-2); cursor: pointer; border-right: 1px solid #2a3652; }
+  .panel .seg label:last-child span { border-right: 0; }
+  .panel .seg input:checked + span { background: var(--blu); color: #fff; }
+  .panel .seg input:focus-visible + span, .panel .chips input:focus-visible + span { outline: 2px solid var(--hl-a); outline-offset: -2px; }
+  .panel .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .panel .chips span { display: block; padding: 9px 12px; border: 1px solid #2a3652; border-radius: 8px; background: #06080f; font: 400 13.5px var(--display); color: var(--ink-2); cursor: pointer; }
+  .panel .chips input:checked + span { border-color: var(--hl-a); background: rgb(58 150 248 / .14); color: var(--ink); }
   .row { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
   .go { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border: 0; border-radius: 8px; background: var(--blu); color: #fff; font: 600 14.5px var(--display); cursor: pointer; }
   .go:hover { background: #0063cc; }
@@ -115,22 +131,80 @@
   <dialog id="signup" aria-labelledby="signup-h">
     <div class="panel" id="signup-form-panel">
       <h2 id="signup-h">Request an audit.</h2>
-      <p class="sub">Tell us where to reach you and we&rsquo;ll be in touch.</p>
+      <p class="sub">Tell us about your store and we&rsquo;ll reply with times. Your answers are saved straight to our team.</p>
       <form id="signup-form" novalidate>
-        <input type="hidden" name="source" value="launch">
         <div class="trap" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-        <label>Your name<input name="name" type="text" autocomplete="name" required maxlength="120"></label>
-        <label>Work email<input name="email" type="email" autocomplete="email" required maxlength="200"></label>
-        <label>Store or group name<input name="company" type="text" autocomplete="organization" required maxlength="160"></label>
-        <label>Rooftops
-          <select name="rooftops" required>
-            <option value="">Choose one</option>
-            <option value="1">1</option>
-            <option value="2-5">2 to 5</option>
-            <option value="6-19">6 to 19</option>
-            <option value="20+">20 or more</option>
-          </select>
-        </label>
+        <div class="two">
+          <label>Name <span class="req">(required)</span><input name="name" type="text" autocomplete="name" required maxlength="120"></label>
+          <label>Work email <span class="req">(required)</span><input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+        </div>
+        <div class="two">
+          <label>Store or group name <span class="req">(required)</span><input name="company" type="text" autocomplete="organization" required maxlength="160"></label>
+          <label>Phone <span class="req">(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
+        </div>
+        <fieldset class="grp">
+          <legend>Rooftops <span class="req">(required)</span></legend>
+          <div class="seg">
+            <label><input type="radio" name="rooftops" value="1"><span>1</span></label>
+            <label><input type="radio" name="rooftops" value="2-5"><span>2&ndash;5</span></label>
+            <label><input type="radio" name="rooftops" value="6-19"><span>6&ndash;19</span></label>
+            <label><input type="radio" name="rooftops" value="20+"><span>20+</span></label>
+          </div>
+        </fieldset>
+        <div class="two">
+          <label>DMS <span class="req">(required)</span>
+            <select name="dms" required>
+              <option value="">Select your DMS</option>
+              <option value="CDK">CDK</option>
+              <option value="Reynolds and Reynolds">Reynolds and Reynolds</option>
+              <option value="Dealertrack">Dealertrack</option>
+              <option value="Tekion">Tekion</option>
+              <option value="Autosoft">Autosoft</option>
+              <option value="PBS Systems">PBS Systems</option>
+              <option value="DealerBuilt">DealerBuilt</option>
+              <option value="Quorum">Quorum</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label>CRM <span class="req">(optional)</span>
+            <select name="crm">
+              <option value="">Select your CRM</option>
+              <option value="VinSolutions">VinSolutions</option>
+              <option value="DealerSocket">DealerSocket</option>
+              <option value="Elead">Elead</option>
+              <option value="Salesforce">Salesforce</option>
+              <option value="HubSpot">HubSpot</option>
+              <option value="Tekion">Tekion</option>
+              <option value="None">None</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+        </div>
+        <label id="signup-dmsother" hidden>Which DMS? <span class="req">(optional)</span><input name="dmsOther" type="text" autocomplete="off" maxlength="120"></label>
+        <label>Your role <span class="req">(optional)</span><input name="role" type="text" autocomplete="organization-title" maxlength="120"></label>
+        <fieldset class="grp">
+          <legend>Other systems you use <span class="req">(optional)</span></legend>
+          <div class="chips">
+            <label><input type="checkbox" name="systems" value="Inventory or pricing tools"><span>Inventory or pricing tools</span></label>
+            <label><input type="checkbox" name="systems" value="Accounting"><span>Accounting</span></label>
+            <label><input type="checkbox" name="systems" value="Reporting or BI"><span>Reporting or BI</span></label>
+            <label><input type="checkbox" name="systems" value="F&amp;I menu"><span>F&amp;I menu</span></label>
+            <label><input type="checkbox" name="systems" value="Digital retailing"><span>Digital retailing</span></label>
+            <label><input type="checkbox" name="systems" value="Service scheduling"><span>Service scheduling</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="grp">
+          <legend>What would you most like to fix? <span class="req">(optional)</span></legend>
+          <div class="chips">
+            <label><input type="checkbox" name="painPoints" value="Money tied up in contracts"><span>Money tied up in contracts</span></label>
+            <label><input type="checkbox" name="painPoints" value="F&amp;I and chargebacks"><span>F&amp;I and chargebacks</span></label>
+            <label><input type="checkbox" name="painPoints" value="Aged inventory"><span>Aged inventory</span></label>
+            <label><input type="checkbox" name="painPoints" value="Month-end close"><span>Month-end close</span></label>
+            <label><input type="checkbox" name="painPoints" value="Reporting across stores"><span>Reporting across stores</span></label>
+            <label><input type="checkbox" name="painPoints" value="Too many spreadsheets"><span>Too many spreadsheets</span></label>
+          </div>
+        </fieldset>
+        <label>Anything else we should know <span class="req">(optional)</span><textarea name="notes" rows="3" maxlength="1000"></textarea></label>
         <p class="msg" id="signup-msg" role="alert"></p>
         <div class="row">
           <button class="go" type="submit" id="signup-go">Send request</button>
@@ -140,35 +214,38 @@
     </div>
     <div class="panel done" id="signup-done" hidden>
       <h2>Thanks, we have it.</h2>
-      <p class="sub">We&rsquo;ll be in touch shortly.</p>
+      <p class="sub">We&rsquo;ll reply within one business day with times.</p>
       <div class="row"><button class="cancel" type="button" id="signup-close">Close</button></div>
     </div>
   </dialog>
 
-<script type="application/json" id="bc-data">{"figures":{"site":{"signInUrl":"","auditEndpoint":"/api/audit-request","auditLive":"no","ndaVersion":"1","ndaSha256":"417ff09f35e0bfe4b1661f163d89f97d5f956db8b1cda92c7f238aadd444298c","year":"2026"},"s":{"15":{},"20":{},"21":{"citTotalM":"$1.4M"},"22":{},"23":{},"24":{},"25":{},"26":{},"00":{},"01":{"rooftopsWord":"two","critDays":"10","agingLine":"60","moveTasks":"23","targetMin":"5","alertMin":"10","targetAt":"50%","lane0":{"name":"Lane 1","med":"3.2","slow":"9.5","medW":"32%","slowW":"95%","arrivals":"54","onTime":"63%","breaches":"3","chip":"c-watch","glyph":"g-dia","label":"Slowest past target","st":"s-watch"},"lane1":{"name":"Lane 2","med":"3.2","slow":"8.3","medW":"32%","slowW":"83%","arrivals":"42","onTime":"79%","breaches":"4","chip":"c-watch","glyph":"g-dia","label":"Slowest past target","st":"s-watch"},"st":{"front_pu_used":"s-out","age_used":"s-out","age_new":"s-watch","cit_count":"s-normal"},"t1":{"b0w":"36.4%","b1w":"9.1%","b2w":"54.5%","gaugeTitle":"Average age of the used lot at Riverside: 39.9 days, against its normal range of 29.5 to 38 days.","gv":"out","work":"Checking Anomaly Watch","tools":"Anomaly Watch, Inventory"},"traces":[{"ask":"Why is front gross per used unit down at Riverside?","work":"Checking Anomaly Watch","scope":"Riverside","tools":"Anomaly Watch, Inventory","gauge":{"min":0,"max":75,"step":5,"major":15,"val":39.92,"dec":1,"state":"out","zones":[{"from":29.480112000000005,"to":38.019887999999995,"state":"normal"},{"from":38.019887999999995,"to":75,"state":"out"}],"label":"AVG AGE · USED LOT · DAYS","title":"Average age of the used lot at Riverside: 39.9 days, against its normal range of 29.5 to 38 days."},"card":{"title":"Front gross per used unit","chip":"c-out","glyph":"g-oct","state":"Out of range","value":"$1,091","sub":"Normal $2,124–$3,554 · Riverside","detail":"11 used units past 60 days","bars":[{"l":"61–75d","v":"4","w":"36.4%","f":false},{"l":"76–90d","v":"1","w":"9.1%","f":false},{"l":"90d+","v":"6","w":"54.5%","f":true}]},"done":"Front gross per used unit at Riverside is $1,091, out of range: normal is $2,124–$3,554. 11 used units are past 60 days."},{"ask":"Which lender is holding the most money past 10 days?","work":"Reading cash & floor-plan health","scope":"Riverside, Summit Auto Group","tools":"CFO Overview, Deals","gauge":{"min":0,"max":30,"step":2,"major":10,"val":21,"dec":0,"state":"out","zones":[{"from":0,"to":4,"state":"normal","last":false},{"from":4,"to":7,"state":"watch","last":false},{"from":7,"to":10,"state":"out","last":false},{"from":10,"to":30,"state":"out","last":true}],"label":"AVG DAYS IN TRANSIT","title":"Captive Lender's contracts past 10 days average 21 days in transit, against an example 4-day funding window."},"card":{"title":"Held past 10 days","chip":"c-out","glyph":"g-oct","state":"Critical","value":"$331.7K","sub":"Captive Lender · 3 contracts · oldest 24 days","detail":"$1.18M held past 10 days · top lenders below","bars":[{"l":"Captive Lender","v":"$331.7K","w":"100%","f":true},{"l":"National Prime A","v":"$321.1K","w":"96.8%","f":false},{"l":"Regional Bank","v":"$259.2K","w":"78.1%","f":false}]},"done":"Captive Lender is holding the most past 10 days: $331.7K across 3 contracts."},{"ask":"What should we cut or wholesale today?","work":"Reading the Pricing Coach","scope":"Riverside","tools":"Pricing Coach, Inventory","gauge":{"min":0,"max":30,"step":2,"major":10,"val":11,"dec":0,"state":"normal","zones":[{"from":2.0696000000000003,"to":13.930399999999999,"state":"normal"},{"from":13.930399999999999,"to":30,"state":"out"}],"label":"USED UNITS PAST 60 DAYS","title":"Riverside has 11 used units past 60 days, against its normal range of 2–14."},"card":{"title":"Worth acting on today","chip":"c-watch","glyph":"g-dia","state":"23 moves","value":"$10,166","sub":"Holding cost $1,805 a day · Riverside","detail":"112 cars checked","bars":[{"l":"Cut","v":"12","w":"100%","f":false},{"l":"Wholesale","v":"11","w":"91.7%","f":false},{"l":"Wait","v":"2","w":"16.7%","f":false}]},"done":"$10,166 is worth acting on today at Riverside: 12 cuts and 11 wholesale calls."}]}}},"plates":{"H1":{"aspect":"21 / 9","alt":"","mp4":"assets/plates/H1-clamp-macro-21x9.mp4","webm":"assets/plates/H1-clamp-macro-21x9.webm","poster":"assets/plates/H1-poster-2400.webp","posterSm":"assets/plates/H1-poster-1200.webp"},"H1v":{"aspect":"9 / 16","alt":"","mp4":"assets/plates/H1-clamp-macro-9x16.mp4","webm":"assets/plates/H1-clamp-macro-9x16.webm","poster":"assets/plates/H1v-poster-2400.webp","posterSm":"assets/plates/H1v-poster-1200.webp"},"H3":{"aspect":"3 / 2","alt":"","mp4":null,"webm":null,"poster":"assets/plates/H3-poster-2400.webp","posterSm":"assets/plates/H3-poster-1200.webp"},"H4":{"aspect":"16 / 9","alt":"","mp4":"assets/plates/H4-service-drive-16x9.mp4","webm":"assets/plates/H4-service-drive-16x9.webm","poster":"assets/plates/H4-poster-2400.webp","posterSm":"assets/plates/H4-poster-1200.webp"},"H5":{"aspect":"16 / 9","alt":"","mp4":null,"webm":null,"poster":"assets/plates/H5-poster-2400.webp","posterSm":"assets/plates/H5-poster-1200.webp"},"H6":{"aspect":"16 / 9","alt":"","mp4":"assets/plates/H6-rotor-clock-16x9.mp4","webm":"assets/plates/H6-rotor-clock-16x9.webm","poster":"assets/plates/H6-poster-2400.webp","posterSm":"assets/plates/H6-poster-1200.webp"}},"emblem":{"width":1600,"height":1843,"body":{"webp":[["assets/emblem/blucaliper-emblem-hero-body-1600.webp",1600],["assets/emblem/blucaliper-emblem-hero-body-800.webp",800]],"png":"assets/emblem/blucaliper-emblem-hero-body.png"},"rotor":{"webp":[["assets/emblem/blucaliper-emblem-hero-rotor-1600.webp",1600],["assets/emblem/blucaliper-emblem-hero-rotor-800.webp",800]],"png":"assets/emblem/blucaliper-emblem-hero-rotor.png"}},"page":{"id":"home","file":"index.html"},"build":{"only":null,"at":"2026-10-10T18:20:04.319Z"}}</script>
+<script type="application/json" id="bc-data">{"figures":{"site":{"signInUrl":"","auditEndpoint":"https://demo.blucaliper.com/api/audit-request","auditLive":"yes","ndaVersion":"1","ndaSha256":"417ff09f35e0bfe4b1661f163d89f97d5f956db8b1cda92c7f238aadd444298c","year":"2026"},"s":{"15":{},"20":{},"21":{"citTotalM":"$1.4M"},"22":{},"23":{},"24":{},"25":{},"26":{},"00":{},"01":{"rooftopsWord":"two","critDays":"10","agingLine":"60","moveTasks":"23","targetMin":"5","alertMin":"10","targetAt":"50%","lane0":{"name":"Lane 1","med":"3.2","slow":"9.5","medW":"32%","slowW":"95%","arrivals":"54","onTime":"63%","breaches":"3","chip":"c-watch","glyph":"g-dia","label":"Slowest past target","st":"s-watch"},"lane1":{"name":"Lane 2","med":"3.2","slow":"8.3","medW":"32%","slowW":"83%","arrivals":"42","onTime":"79%","breaches":"4","chip":"c-watch","glyph":"g-dia","label":"Slowest past target","st":"s-watch"},"st":{"front_pu_used":"s-out","age_used":"s-out","age_new":"s-watch","cit_count":"s-normal"},"t1":{"b0w":"36.4%","b1w":"9.1%","b2w":"54.5%","gaugeTitle":"Average age of the used lot at Riverside: 39.9 days, against its normal range of 29.5 to 38 days.","gv":"out","work":"Checking Anomaly Watch","tools":"Anomaly Watch, Inventory"},"traces":[{"ask":"Why is front gross per used unit down at Riverside?","work":"Checking Anomaly Watch","scope":"Riverside","tools":"Anomaly Watch, Inventory","gauge":{"min":0,"max":75,"step":5,"major":15,"val":39.92,"dec":1,"state":"out","zones":[{"from":29.480112000000005,"to":38.019887999999995,"state":"normal"},{"from":38.019887999999995,"to":75,"state":"out"}],"label":"AVG AGE · USED LOT · DAYS","title":"Average age of the used lot at Riverside: 39.9 days, against its normal range of 29.5 to 38 days."},"card":{"title":"Front gross per used unit","chip":"c-out","glyph":"g-oct","state":"Out of range","value":"$1,091","sub":"Normal $2,124–$3,554 · Riverside","detail":"11 used units past 60 days","bars":[{"l":"61–75d","v":"4","w":"36.4%","f":false},{"l":"76–90d","v":"1","w":"9.1%","f":false},{"l":"90d+","v":"6","w":"54.5%","f":true}]},"done":"Front gross per used unit at Riverside is $1,091, out of range: normal is $2,124–$3,554. 11 used units are past 60 days."},{"ask":"Which lender is holding the most money past 10 days?","work":"Reading cash & floor-plan health","scope":"Riverside, Summit Auto Group","tools":"CFO Overview, Deals","gauge":{"min":0,"max":30,"step":2,"major":10,"val":21,"dec":0,"state":"out","zones":[{"from":0,"to":4,"state":"normal","last":false},{"from":4,"to":7,"state":"watch","last":false},{"from":7,"to":10,"state":"out","last":false},{"from":10,"to":30,"state":"out","last":true}],"label":"AVG DAYS IN TRANSIT","title":"Captive Lender's contracts past 10 days average 21 days in transit, against an example 4-day funding window."},"card":{"title":"Held past 10 days","chip":"c-out","glyph":"g-oct","state":"Critical","value":"$331.7K","sub":"Captive Lender · 3 contracts · oldest 24 days","detail":"$1.18M held past 10 days · top lenders below","bars":[{"l":"Captive Lender","v":"$331.7K","w":"100%","f":true},{"l":"National Prime A","v":"$321.1K","w":"96.8%","f":false},{"l":"Regional Bank","v":"$259.2K","w":"78.1%","f":false}]},"done":"Captive Lender is holding the most past 10 days: $331.7K across 3 contracts."},{"ask":"What should we cut or wholesale today?","work":"Reading the Pricing Coach","scope":"Riverside","tools":"Pricing Coach, Inventory","gauge":{"min":0,"max":30,"step":2,"major":10,"val":11,"dec":0,"state":"normal","zones":[{"from":2.0696000000000003,"to":13.930399999999999,"state":"normal"},{"from":13.930399999999999,"to":30,"state":"out"}],"label":"USED UNITS PAST 60 DAYS","title":"Riverside has 11 used units past 60 days, against its normal range of 2–14."},"card":{"title":"Worth acting on today","chip":"c-watch","glyph":"g-dia","state":"23 moves","value":"$10,166","sub":"Holding cost $1,805 a day · Riverside","detail":"112 cars checked","bars":[{"l":"Cut","v":"12","w":"100%","f":false},{"l":"Wholesale","v":"11","w":"91.7%","f":false},{"l":"Wait","v":"2","w":"16.7%","f":false}]},"done":"$10,166 is worth acting on today at Riverside: 12 cuts and 11 wholesale calls."}]}}},"plates":{"H1":{"aspect":"21 / 9","alt":"","mp4":"assets/plates/H1-clamp-macro-21x9.mp4","webm":"assets/plates/H1-clamp-macro-21x9.webm","poster":"assets/plates/H1-poster-2400.webp","posterSm":"assets/plates/H1-poster-1200.webp"},"H1v":{"aspect":"9 / 16","alt":"","mp4":"assets/plates/H1-clamp-macro-9x16.mp4","webm":"assets/plates/H1-clamp-macro-9x16.webm","poster":"assets/plates/H1v-poster-2400.webp","posterSm":"assets/plates/H1v-poster-1200.webp"},"H3":{"aspect":"3 / 2","alt":"","mp4":null,"webm":null,"poster":"assets/plates/H3-poster-2400.webp","posterSm":"assets/plates/H3-poster-1200.webp"},"H4":{"aspect":"16 / 9","alt":"","mp4":"assets/plates/H4-service-drive-16x9.mp4","webm":"assets/plates/H4-service-drive-16x9.webm","poster":"assets/plates/H4-poster-2400.webp","posterSm":"assets/plates/H4-poster-1200.webp"},"H5":{"aspect":"16 / 9","alt":"","mp4":null,"webm":null,"poster":"assets/plates/H5-poster-2400.webp","posterSm":"assets/plates/H5-poster-1200.webp"},"H6":{"aspect":"16 / 9","alt":"","mp4":"assets/plates/H6-rotor-clock-16x9.mp4","webm":"assets/plates/H6-rotor-clock-16x9.webm","poster":"assets/plates/H6-poster-2400.webp","posterSm":"assets/plates/H6-poster-1200.webp"}},"emblem":{"width":1600,"height":1843,"body":{"webp":[["assets/emblem/blucaliper-emblem-hero-body-1600.webp",1600],["assets/emblem/blucaliper-emblem-hero-body-800.webp",800]],"png":"assets/emblem/blucaliper-emblem-hero-body.png"},"rotor":{"webp":[["assets/emblem/blucaliper-emblem-hero-rotor-1600.webp",1600],["assets/emblem/blucaliper-emblem-hero-rotor-800.webp",800]],"png":"assets/emblem/blucaliper-emblem-hero-rotor.png"}},"page":{"id":"home","file":"index.html"},"build":{"only":null,"at":"2026-10-12T18:02:42.902Z"}}</script>
 <script type="module" src="assets/site-home.js"></script>
 
   <script>
-    /* Early-access signup. It posts to the BluCaliper app, which saves it to Prospects first, then tells the team. */
+    /* The audit request. It posts the full form to the BluCaliper app, which saves it to Prospects first, then tells the team. */
     (function () {
       var local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
       var ENDPOINT = local ? 'http://localhost:3000/api/audit-request' : 'https://demo.blucaliper.com/api/audit-request';
-      var MAIL = 'mailto:sales@blucaliper.com?subject=BluCaliper';
+      var MAIL = 'mailto:sales@blucaliper.com?subject=Audit%20request';
       var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
       var dlg = document.getElementById('signup'), form = document.getElementById('signup-form'), msg = document.getElementById('signup-msg');
       var go = document.getElementById('signup-go'), panel = document.getElementById('signup-form-panel'), done = document.getElementById('signup-done');
+      var other = document.getElementById('signup-dmsother');
       var busy = false;
-      document.getElementById('signup-open').addEventListener('click', function () { panel.hidden = false; done.hidden = true; msg.textContent = ''; dlg.showModal(); form.elements.name.focus(); });
+      document.getElementById('signup-open').addEventListener('click', function () { panel.hidden = false; done.hidden = true; msg.textContent = ''; dlg.showModal(); dlg.scrollTop = 0; form.elements.name.focus(); });
       document.getElementById('signup-cancel').addEventListener('click', function () { dlg.close(); });
       document.getElementById('signup-close').addEventListener('click', function () { dlg.close(); });
       dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      form.elements.dms.addEventListener('change', function () { other.hidden = form.elements.dms.value !== 'Other'; });
       function problem() {
         var f = form.elements, first = null;
-        ['name', 'email', 'company', 'rooftops'].forEach(function (k) { f[k].removeAttribute('aria-invalid'); });
+        ['name', 'email', 'company', 'dms'].forEach(function (k) { f[k].removeAttribute('aria-invalid'); });
         if (!f.name.value.trim()) first = [f.name, 'Enter your name.'];
         else if (!EMAIL.test(f.email.value.trim())) first = [f.email, 'Enter a work email so we can reach you.'];
         else if (!f.company.value.trim()) first = [f.company, 'Enter your store or group name.'];
-        else if (!f.rooftops.value) first = [f.rooftops, 'Choose how many rooftops.'];
+        else if (!form.querySelector('input[name="rooftops"]:checked')) first = [form.querySelector('input[name="rooftops"]'), 'Choose how many rooftops.'];
+        else if (!f.dms.value) first = [f.dms, 'Pick your DMS.'];
         return first;
       }
       form.addEventListener('submit', function (e) {
@@ -178,8 +255,14 @@
         if (p) { p[0].setAttribute('aria-invalid', 'true'); p[0].focus(); msg.textContent = p[1]; return; }
         busy = true; go.setAttribute('aria-disabled', 'true'); msg.textContent = '';
         fetch(ENDPOINT, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
-          .then(function (r) { if (!r.ok) throw new Error(String(r.status)); panel.hidden = true; done.hidden = false; form.reset(); })
-          .catch(function () { msg.innerHTML = 'That didn&rsquo;t go through. Please try again, or <a href="' + MAIL + '">email us</a>.'; })
+          .then(function (r) {
+            if (r.ok) { panel.hidden = true; done.hidden = false; form.reset(); other.hidden = true; return; }
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              var first = j && j.errors ? Object.keys(j.errors)[0] : null;
+              var e = new Error(first ? j.errors[first] : String(r.status)); e.field = first; throw e;
+            });
+          })
+          .catch(function (err) { msg.innerHTML = (err && err.field ? err.message + ' ' : 'That didn&rsquo;t go through. ') + 'Please try again, or <a href="' + MAIL + '">email us</a>.'; })
           .then(function () { busy = false; go.removeAttribute('aria-disabled'); });
       });
     })();
